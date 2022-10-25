@@ -1,0 +1,5 @@
+Flask
+flask_restx
+werkzeug==2.1.2
+yact
+kafka-python
