@@ -6,7 +6,7 @@ from app.controller.topic_controller import Topic
 
 Flask.config_class = AppConfig
 app = Flask(__name__)
-app.config.from_yaml('config.yaml')
+app.config.from_yaml('application.yaml')
 
 api = Api(
     app,
