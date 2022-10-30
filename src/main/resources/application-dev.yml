@@ -1,0 +1,12 @@
+server:
+  port: 3000
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+kafka:
+  admin:
+    servers: localhost:9092,192.168.0.202:9092,192.168.0.203:9092
+
