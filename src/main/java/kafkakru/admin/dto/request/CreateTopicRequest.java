@@ -1,4 +1,4 @@
-package kafkakru.admin.dto;
+package kafkakru.admin.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;

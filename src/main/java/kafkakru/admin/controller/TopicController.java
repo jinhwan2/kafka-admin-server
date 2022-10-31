@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 import kafkakru.admin.annotation.V1Version;
-import kafkakru.admin.dto.CreateTopicRequest;
 import kafkakru.admin.dto.Topic;
+import kafkakru.admin.dto.request.CreateTopicRequest;
 import kafkakru.admin.model.HttpResponse;
 import kafkakru.admin.service.TopicService;
 
