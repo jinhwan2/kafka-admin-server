@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
-import kafkakru.admin.dto.CreateTopicRequest;
 import kafkakru.admin.dto.Topic;
+import kafkakru.admin.dto.request.CreateTopicRequest;
 
 @Service
 @RequiredArgsConstructor
