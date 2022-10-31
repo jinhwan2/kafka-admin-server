@@ -11,12 +11,10 @@ import org.apache.kafka.clients.admin.TopicDescription;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import kafkakru.admin.dto.CreateTopicRequest;
 import kafkakru.admin.dto.Topic;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TopicService {
