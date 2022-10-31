@@ -41,7 +41,7 @@ public class TopicController {
     }
 
     @DeleteMapping("topics/{topicName}")
-    boolean deleteTopic(@PathVariable String topicName) {
+    boolean deleteTopic(@PathVariable String topicName) throws ExecutionException, InterruptedException {
         return this.topicService.deleteTopic(topicName);
     }
 }

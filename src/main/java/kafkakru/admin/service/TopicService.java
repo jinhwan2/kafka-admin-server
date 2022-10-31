@@ -11,21 +11,25 @@ import org.apache.kafka.clients.admin.TopicDescription;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import kafkakru.admin.dto.CreateTopicRequest;
 import kafkakru.admin.dto.Topic;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TopicService {
     private final AdminClient kafkaAdminClient;
 
-    public boolean createTopic(CreateTopicRequest createTopicRequest) {
+    public boolean createTopic(CreateTopicRequest createTopicRequest) throws ExecutionException, InterruptedException {
         NewTopic newTopic = new NewTopic(createTopicRequest.getTopicName(), createTopicRequest.getNumPartitions(), createTopicRequest.getReplicationFactor().shortValue());
 
-        return this.kafkaAdminClient.createTopics(List.of(newTopic))
+        this.kafkaAdminClient.createTopics(List.of(newTopic))
             .all()
-            .isDone();
+            .get();
+
+        return true;
     }
 
     public Set<Topic> getTopics() throws ExecutionException, InterruptedException {
@@ -46,9 +50,11 @@ public class TopicService {
             }).get();
     }
 
-    public boolean deleteTopic(String topicName) {
-        return this.kafkaAdminClient.deleteTopics(List.of(topicName))
+    public boolean deleteTopic(String topicName) throws ExecutionException, InterruptedException {
+        this.kafkaAdminClient.deleteTopics(List.of(topicName))
             .all()
-            .isDone();
+            .get();
+
+        return true;
     }
 }
