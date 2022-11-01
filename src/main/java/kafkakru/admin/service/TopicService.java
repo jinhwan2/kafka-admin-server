@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.admin.TopicDescription;
+import org.apache.kafka.clients.admin.TopicListing;
 import org.apache.kafka.common.config.ConfigResource;
 import org.springframework.stereotype.Service;
 
@@ -37,22 +38,25 @@ public class TopicService extends AbstractKafkaAdminClientService{
         return true;
     }
 
-    public Set<Topic> get() throws ExecutionException, InterruptedException {
+    public Set<String> getAll() throws ExecutionException, InterruptedException {
         return this.kafkaAdminClient.listTopics()
             .listings()
             .thenApply(it -> it.stream()
-                .map(topic -> new Topic(topic.name(), topic.topicId().toString()))
+                .map(TopicListing::name)
                 .collect(Collectors.toSet())
             ).get();
     }
 
-    public Topic getAll(String topicName) throws ExecutionException, InterruptedException {
-        return this.kafkaAdminClient.describeTopics(List.of(topicName))
+    public Map<String, Topic> get(List<String> topicNames) throws ExecutionException, InterruptedException {
+        return this.kafkaAdminClient.describeTopics(topicNames)
             .allTopicNames()
-            .thenApply(it -> {
-                TopicDescription topic = it.get(topicName);
-                return new Topic(topic.name(), topic.topicId().toString());
-            }).get();
+            .thenApply(it -> it.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> {
+                    TopicDescription topic = e.getValue();
+                    return new Topic(topic.name(), topic.topicId().toString());
+                }))
+            ).get();
+
     }
 
     public boolean delete(String topicName) throws ExecutionException, InterruptedException {
@@ -61,15 +65,6 @@ public class TopicService extends AbstractKafkaAdminClientService{
             .get();
 
         return true;
-    }
-
-    public Map<String, List<Entry<String, String>>> getAllConfigs() throws ExecutionException, InterruptedException {
-        List<ConfigResource> configResources = this.get().stream()
-            .map(Topic::getName)
-            .map(it -> new ConfigResource(RESOURCE_TYPE, it))
-            .collect(Collectors.toList());
-
-        return this.configService.getConfigs(configResources);
     }
 
     public List<Entry<String, String>> getConfig(String topicName) throws ExecutionException, InterruptedException {
