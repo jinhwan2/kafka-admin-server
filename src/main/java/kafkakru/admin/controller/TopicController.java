@@ -19,7 +19,6 @@ import kafkakru.admin.dto.Entry;
 import kafkakru.admin.dto.Topic;
 import kafkakru.admin.dto.request.ConfigModifyRequest;
 import kafkakru.admin.dto.request.CreateTopicRequest;
-import kafkakru.admin.model.HttpResponse;
 import kafkakru.admin.service.TopicService;
 
 @V1Version
@@ -34,10 +33,8 @@ public class TopicController {
     }
 
     @GetMapping("topics")
-    HttpResponse<Set<Topic>> getTopics() throws ExecutionException, InterruptedException {
-        return HttpResponse.success(
-            this.topicService.get()
-        );
+    Set<Topic> getTopics() throws ExecutionException, InterruptedException {
+        return this.topicService.get();
     }
 
     @GetMapping("topics/{topicName}")

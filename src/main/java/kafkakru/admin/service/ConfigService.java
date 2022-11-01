@@ -44,7 +44,6 @@ class ConfigService extends AbstractKafkaAdminClientService{
     }
 
     boolean update(ConfigResource resource, Map<String, String> config) throws ExecutionException, InterruptedException {
-        // TODO: 잘못된 key 값 막는 로직도 필요함
         List<AlterConfigOp> alterConfigOps = config.entrySet().stream()
             .map(it -> new ConfigEntry(it.getKey(), it.getValue()))
             .map(it -> new AlterConfigOp(it, AlterConfigOp.OpType.SET))
