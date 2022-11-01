@@ -1,4 +1,4 @@
-package kafkakru.admin.model;
+package kafkakru.admin.advice.response;
 
 import org.springframework.http.HttpStatus;
 

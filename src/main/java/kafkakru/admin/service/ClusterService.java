@@ -9,14 +9,13 @@ import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.common.acl.AclOperation;
 import org.springframework.stereotype.Service;
 
-import lombok.RequiredArgsConstructor;
-
 import kafkakru.admin.dto.Node;
 
 @Service
-@RequiredArgsConstructor
-public class ClusterService {
-    private final AdminClient kafkaAdminClient;
+public class ClusterService extends AbstractKafkaAdminClientService{
+    public ClusterService(AdminClient kafkaAdminClient) {
+        super(kafkaAdminClient);
+    }
 
     public String getClusterId() throws ExecutionException, InterruptedException {
         return this.kafkaAdminClient.describeCluster()
