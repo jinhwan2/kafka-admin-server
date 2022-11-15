@@ -5,8 +5,11 @@ import org.springframework.http.HttpStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 @Value
 @RequiredArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class HttpResponse<T> {
     T data;
     int status;
