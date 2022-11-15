@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -32,14 +33,20 @@ public class TopicController {
         return this.topicService.create(createTopicRequest);
     }
 
-    @GetMapping("topics")
-    Set<Topic> getTopics() throws ExecutionException, InterruptedException {
-        return this.topicService.get();
+    @GetMapping("topic-names")
+    Set<String> getAllTopicNames() throws ExecutionException, InterruptedException {
+        return this.topicService.getAll();
     }
 
     @GetMapping("topics/{topicName}")
-    Topic getTopic(@PathVariable  String topicName) throws ExecutionException, InterruptedException {
-        return this.topicService.getAll(topicName);
+    Topic getTopic(@PathVariable String topicName) throws ExecutionException, InterruptedException {
+        return this.topicService.get(List.of(topicName))
+            .get(topicName);
+    }
+
+    @GetMapping("topics")
+    Map<String, Topic> getTopics1(@RequestParam List<String> topicNames) throws ExecutionException, InterruptedException {
+        return this.topicService.get(topicNames);
     }
 
     @DeleteMapping("topics/{topicName}")
@@ -47,18 +54,13 @@ public class TopicController {
         return this.topicService.delete(topicName);
     }
 
-    @GetMapping("topic-configs")
-    Map<String, List<Entry<String, String>>> getTopicConfigs() throws ExecutionException, InterruptedException {
-        return this.topicService.getAllConfigs();
+    @PutMapping("/topics/{topicName}")
+    boolean updateBrokerConfig(@PathVariable String topicName, ConfigModifyRequest configModifyRequest) throws ExecutionException, InterruptedException {
+        return this.topicService.updateConfig(topicName, configModifyRequest);
     }
 
     @GetMapping("topic-configs/{topicName}")
     List<Entry<String, String>> getTopicConfig(@PathVariable String topicName) throws ExecutionException, InterruptedException {
         return this.topicService.getConfig(topicName);
-    }
-
-    @PutMapping("/topics/{topicName}")
-    boolean updateBrokerConfig(@PathVariable String topicName, ConfigModifyRequest configModifyRequest) throws ExecutionException, InterruptedException {
-        return this.topicService.updateConfig(topicName, configModifyRequest);
     }
 }
