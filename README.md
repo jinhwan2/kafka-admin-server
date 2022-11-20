@@ -28,3 +28,9 @@ docker-compose -f zk-multiple-kafka-multiple.yml up  -d
 ```bash
 docker-compose -f zk-multiple-kafka-multiple.yml down
 ```
+
+## run
+### cli
+```bash
+./run.sh
+```
